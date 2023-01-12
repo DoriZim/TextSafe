@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root fx:id="bigHBox" id="background" stylesheets="@./style/titleBar.css" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="30.0" spacing="169.0" type="HBox" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="bigHBox" id="background" stylesheets="@./style/titleBar.css" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" spacing="169.0" type="HBox" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <HBox fx:id="buttonHBox" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="60.0">
       <Button id="minimizeButton" fx:id="minimizeButton" prefHeight="28.0" prefWidth="28.0" text="-" textAlignment="CENTER" textFill="WHITE" />
       <Button id="highlightedButton" fx:id="closeButton" prefHeight="28.0" prefWidth="28.0" text="x" textFill="WHITE" />

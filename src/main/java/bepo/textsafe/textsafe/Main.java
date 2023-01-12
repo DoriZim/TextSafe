@@ -54,6 +54,8 @@ public class Main extends Application {
         //Sets Controllers in Views
         this.pinView.setPinController(this.pinController);
         this.mainView.setMainController(this.mainController);
+        this.mainView.setPinController(this.pinController);
+        this.mainView.setRootNodeFetcher(rootNodeFetcher);
 
         stage.setScene(scene);
         stage.setTitle("TextSafe");

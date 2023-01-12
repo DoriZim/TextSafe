@@ -1,5 +1,7 @@
 #background {
     -fx-background-color: #2d2d2f;
+    -fx-border-color: darkgrey;
+    -fx-border-style: hidden hidden solid hidden;
 }
 
 .label {

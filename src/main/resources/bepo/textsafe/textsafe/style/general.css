@@ -11,21 +11,21 @@
 
 .text-area {
     -fx-text-fill: white;
-    -fx-border-color: grey;
+    -fx-background-color: #4a4e50;
+    -fx-accent: #466c9f;
+    -fx-border-style: hidden;
 }
 
 .text-area .content{
     -fx-background-color: #4a4e50;
-    -fx-border-color: transparent;
-}
-
-.text-area:focused {
-    -fx-background-color: grey;
+    -fx-background-radius: 0;
+    -fx-border-style: hidden;
 }
 
 .text-field {
     -fx-background-color: #4a4e50;
     -fx-text-fill: white;
+    -fx-accent: #466c9f;
 }
 
 .text-field:focused {
