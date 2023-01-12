@@ -55,10 +55,12 @@ public class MainView implements Initializable {
 
         //Adjusting the MenuBar
         Menu file = menuBar.getMenus().get(0);
-        file.getItems().get(0).setText("Save");
-        file.getItems().get(0).setOnAction(actionEvent -> onSaveClick());
+        file.getItems().get(0).setText("Clear Text");
+        file.getItems().get(0).setOnAction(actionEvent -> textArea.clear());
+        file.getItems().add(new MenuItem("Save Changes"));
+        file.getItems().get(1).setOnAction(actionEvent -> onSaveClick());
         file.getItems().add(new MenuItem("Edit PIN"));
-        file.getItems().get(1).setOnAction(actionEvent -> onPinChangeClick());
+        file.getItems().get(2).setOnAction(actionEvent -> onPinChangeClick());
 
         Menu about = menuBar.getMenus().get(1);
         about.getItems().get(0).setOnAction(actionEvent -> onAboutClick());
@@ -85,6 +87,14 @@ public class MainView implements Initializable {
     //Handles close-Button by closing the program
     @FXML
     private void onCloseButtonClick() {
+        int choice = Alerts.choiceAlert("Quit the program?", "Are you sure you want to quit? \n Make sure all your changes are saved.", "Save and Quit", "Quit");
+
+        if(choice == 0) {
+            return;
+        } else if (choice == 1) {
+            onSaveClick();
+        }
+
         Platform.exit();
         System.exit(0);
     }
@@ -98,9 +108,6 @@ public class MainView implements Initializable {
     }
 
     private void onPinChangeClick() {
-        //todo
-        System.out.println("Clicked");
-
         if(Alerts.confirmationAlert("Are you sure?", "You are about to set a new PIN. You cannot access the program without it.")) {
             pinController.setEdit(true);
 

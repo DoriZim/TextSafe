@@ -24,7 +24,8 @@
     -fx-border-radius: 0;
     -fx-background-radius: 0;
 }
+
 #highlightedButton.button:hover {
-    -fx-background-color:#ff0000;
+    -fx-background-color: red;
     -fx-font-weight:bold;
 }
