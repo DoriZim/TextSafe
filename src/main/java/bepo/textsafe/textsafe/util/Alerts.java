@@ -1,5 +1,7 @@
 package bepo.textsafe.textsafe.util;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
@@ -55,16 +57,13 @@ public class Alerts {
 
     //Sets shared properties to the created alert (stage properties, stylesheet)
     private static Alert setAlert(Alert alert) {
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        //stage.initStyle(StageStyle.UNDECORATED);
-        //stage.setAlwaysOnTop(true);
-
-        /*
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(
-                Alerts.class.getResource("/bepo.passsave/style/alerts.css").toExternalForm());
+                Alerts.class.getResource("/bepo/textsafe/textsafe/style/alerts.css").toExternalForm());
         dialogPane.getStyleClass().add("notification");
-         */
+
+        Stage stage = (Stage) dialogPane.getScene().getWindow();
+        stage.initStyle(StageStyle.UNDECORATED);
 
         return alert;
     }

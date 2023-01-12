@@ -58,6 +58,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("TextSafe");
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.show();
 
@@ -69,7 +70,7 @@ public class Main extends Application {
         pinStage.setScene(pinScene);
         pinStage.setTitle("Enter PIN");
         pinStage.setResizable(false);
-        //pinStage.initStyle(StageStyle.UNDECORATED);
+        pinStage.initStyle(StageStyle.UNDECORATED);
         pinStage.initModality(Modality.APPLICATION_MODAL);
         pinStage.setOnCloseRequest(windowEvent -> {
             Platform.exit();
