@@ -1,13 +1,11 @@
 package bepo.textsafe.textsafe.views;
 
 import bepo.textsafe.textsafe.controller.MainController;
-import bepo.textsafe.textsafe.controller.TitleBar;
 import bepo.textsafe.textsafe.util.Alerts;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -16,8 +14,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -47,7 +43,7 @@ public class MainView implements Initializable {
         bigHBox.addEventHandler(MouseEvent.MOUSE_DRAGGED, eventHandler);
 
         //Adds eventHandler so that closeButton and minimizeButton clicks can be recognized
-        closeButton.setOnAction((event) -> this.onCloseButtonClick(event));
+        closeButton.setOnAction((event) -> this.onCloseButtonClick());
         minimizeButton.setOnAction((event) -> this.onMinimizeButtonClick(event));
 
         //Adjusting the MenuBar
@@ -79,7 +75,7 @@ public class MainView implements Initializable {
 
     //Handles close-Button by closing the program
     @FXML
-    private void onCloseButtonClick(ActionEvent actionEvent) {
+    private void onCloseButtonClick() {
         Platform.exit();
         System.exit(0);
     }

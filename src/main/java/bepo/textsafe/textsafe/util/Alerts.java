@@ -1,13 +1,12 @@
 package bepo.textsafe.textsafe.util;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Alerts {
@@ -59,7 +58,7 @@ public class Alerts {
     private static Alert setAlert(Alert alert) {
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(
-                Alerts.class.getResource("/bepo/textsafe/textsafe/style/alerts.css").toExternalForm());
+                Objects.requireNonNull(Alerts.class.getResource("/bepo/textsafe/textsafe/style/alerts.css")).toExternalForm());
         dialogPane.getStyleClass().add("notification");
 
         Stage stage = (Stage) dialogPane.getScene().getWindow();

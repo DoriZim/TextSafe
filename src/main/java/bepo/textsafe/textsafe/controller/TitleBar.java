@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -52,7 +51,7 @@ public class TitleBar extends HBox {
         bigHBox.addEventHandler(MouseEvent.MOUSE_DRAGGED, eventHandler);
 
         //Adds eventHandler so that closeButton and minimizeButton clicks can be recognized
-        closeButton.setOnAction((event) -> this.onCloseButtonClick(event));
+        closeButton.setOnAction((event) -> this.onCloseButtonClick());
         minimizeButton.setOnAction((event) -> this.onMinimizeButtonClick(event));
     }
 
@@ -76,14 +75,7 @@ public class TitleBar extends HBox {
 
     //Handles close-Button by closing the program
     @FXML
-    private void onCloseButtonClick(ActionEvent actionEvent) {
-        if(((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).getTitle().equals("Modifying PassSaves") ||
-                ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).getTitle().equals("Categories") ||
-                    ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).getTitle().equals("Settings")) {
-            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
-            return;
-        }
-
+    private void onCloseButtonClick() {
         Platform.exit();
         System.exit(0);
     }

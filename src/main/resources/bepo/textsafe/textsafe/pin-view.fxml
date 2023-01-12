@@ -7,16 +7,16 @@
 <AnchorPane stylesheets="@./style/general.css" styleClass="anchor-pane" prefHeight="400.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bepo.textsafe.textsafe.views.PinView">
    <children>
       <TextField fx:id="pinTextField" alignment="CENTER" layoutX="98.0" layoutY="82.0" prefHeight="46.0" prefWidth="114.0" promptText="Enter PIN"/>
-      <Button fx:id="oneButton" layoutX="80.0" layoutY="145.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="1" />
-      <Button fx:id="twoButton" layoutX="136.0" layoutY="145.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="39.0" text="2" />
-      <Button fx:id="threeButton" layoutX="195.0" layoutY="145.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="3" />
-      <Button fx:id="fourButton" layoutX="80.0" layoutY="201.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="4" />
-      <Button fx:id="fiveButton" layoutX="136.0" layoutY="201.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="5" />
-      <Button fx:id="sixButton" layoutX="195.0" layoutY="201.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="6" />
-      <Button fx:id="sevenButton" layoutX="79.0" layoutY="261.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="7" />
-      <Button fx:id="eightButton" layoutX="136.0" layoutY="261.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="8" />
-      <Button fx:id="nineButton" layoutX="195.0" layoutY="261.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="9" />
-      <Button fx:id="nineButton1" layoutX="136.0" layoutY="315.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="0" />
+      <Button layoutX="80.0" layoutY="145.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="1" />
+      <Button layoutX="136.0" layoutY="145.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="39.0" text="2" />
+      <Button layoutX="195.0" layoutY="145.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="3" />
+      <Button layoutX="80.0" layoutY="201.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="4" />
+      <Button layoutX="136.0" layoutY="201.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="5" />
+      <Button layoutX="195.0" layoutY="201.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="6" />
+      <Button layoutX="79.0" layoutY="261.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="7" />
+      <Button layoutX="136.0" layoutY="261.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="8" />
+      <Button layoutX="195.0" layoutY="261.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="9" />
+      <Button layoutX="136.0" layoutY="315.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="0" />
       <Label fx:id="infoLabel" layoutX="70.0" layoutY="44.0" prefWidth="170.0" text="PIN must consist of four digits" textFill="WHITE" />
       <TitleBar layoutY="1.5" layoutX="2.0" prefWidth="316"/>
    </children>
