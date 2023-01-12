@@ -6,6 +6,7 @@ import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Alerts {
@@ -55,16 +56,13 @@ public class Alerts {
 
     //Sets shared properties to the created alert (stage properties, stylesheet)
     private static Alert setAlert(Alert alert) {
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        //stage.initStyle(StageStyle.UNDECORATED);
-        //stage.setAlwaysOnTop(true);
-
-        /*
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(
-                Alerts.class.getResource("/bepo.passsave/style/alerts.css").toExternalForm());
+                Objects.requireNonNull(Alerts.class.getResource("/bepo/textsafe/textsafe/style/alerts.css")).toExternalForm());
         dialogPane.getStyleClass().add("notification");
-         */
+
+        Stage stage = (Stage) dialogPane.getScene().getWindow();
+        stage.initStyle(StageStyle.UNDECORATED);
 
         return alert;
     }

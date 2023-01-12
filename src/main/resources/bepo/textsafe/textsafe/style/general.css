@@ -1,0 +1,111 @@
+.anchor-pane {
+    -fx-alignment: center;
+    -fx-background-color: #2d2d2f;
+    -fx-border-color: derive(black, 90%);
+    -fx-border-width: 1;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.text-area {
+    -fx-text-fill: white;
+    -fx-border-color: grey;
+}
+
+.text-area .content{
+    -fx-background-color: #4a4e50;
+    -fx-border-color: transparent;
+}
+
+.text-area:focused {
+    -fx-background-color: grey;
+}
+
+.text-field {
+    -fx-background-color: #4a4e50;
+    -fx-text-fill: white;
+}
+
+.text-field:focused {
+    -fx-background-color: grey, #4a4e50, transparent, #4a4e50; /* -> bzw. -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color; */
+}
+
+.menu-bar {
+    -fx-background-color: #2d2d2f ;
+    -fx-opacity: 0.5;
+    -fx-border-width: 2.0;
+}
+
+.menu-bar .label {
+    -fx-font-size: 12.0 pt;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+
+}
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+    -fx-background: #2d2d2f ;
+    -fx-text-fill: white;
+}
+
+/* Different menus in the menu-bar */
+.menu {
+    -fx-background-color: #2d2d2f;
+    -fx-border-color: transparent;
+}
+
+.menu:hover {
+    -fx-background-color: grey;
+}
+
+.menu:pressed {
+    -fx-background-color: lightgrey;
+}
+
+/* Items of the menus */
+.menu-item {
+    -fx-text-fill: white;
+    -fx-background: darkgray ;
+    -fx-background-color: #2d2d2f;
+}
+
+.menu-item:hover {
+    -fx-background-color: grey;
+}
+
+.menu-item .label{
+    -fx-text-fill: white;
+}
+.menu-item .label:hover{
+    -fx-background: black ;
+    -fx-text-fill: white;
+}
+
+/* Popup when clicking the menu-bar that contains the items */
+.context-menu {
+    -fx-background-color:transparent ;
+    -fx-border-color: transparent;
+}
+
+.context-menu:hover {
+    -fx-background-color:transparent;
+    -fx-border-color: transparent;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-background-color: #4a4e50;
+}
+
+.menu:showing { /* menu when it's being shown (activated) */ }
+.menu .label { /* Styles the text on a menu item */ }
+.menu:showing .label { /* Styles the text on a menu item when activated */ }
+
+.button:hover {
+    -fx-background-color: dimgrey;
+}
+
+.button:focused {
+    -fx-border-color: grey;
+}

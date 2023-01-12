@@ -11,9 +11,9 @@ public class MainController {
         return data;
     }
 
-    public boolean saveData(String data) {
+    public boolean saveData(String newData) {
         try {
-            Serialization.serializeData(data);
+            Serialization.serializeData(newData);
         } catch (Exception e) {
             System.err.println(e);
             return false;

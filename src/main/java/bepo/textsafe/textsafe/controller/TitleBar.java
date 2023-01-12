@@ -1,32 +1,40 @@
-package bepo.textsafe.textsafe.views;
+package bepo.textsafe.textsafe.controller;
 
-import bepo.textsafe.textsafe.controller.MainController;
-import bepo.textsafe.textsafe.util.Alerts;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class MainView implements Initializable {
-    private MainController mainController;
-    @FXML private MenuBar menuBar;
-    @FXML private TextArea textArea;
+import java.io.IOException;
+
+/**
+ * Custom titleBar that handles window dragging, minimizing the window and closing the program.
+ * It's loaded into the other fxml files as a component.
+ */
+public class TitleBar extends HBox {
+    private static TitleBar obj = null; //Create empty controller object
     @FXML private HBox bigHBox;
     @FXML private Button minimizeButton, closeButton;
     public double X, Y;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    //Gets called by FXML when loading its components (including the titleBar)
+    public TitleBar() {
+        obj = this; //Assign already created controller
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/bepo/textSafe/textSafe/titleBar.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         //Creating the mouse event handler
         EventHandler<MouseEvent> eventHandler =
                 e -> {
@@ -45,14 +53,6 @@ public class MainView implements Initializable {
         //Adds eventHandler so that closeButton and minimizeButton clicks can be recognized
         closeButton.setOnAction((event) -> this.onCloseButtonClick());
         minimizeButton.setOnAction((event) -> this.onMinimizeButtonClick(event));
-
-        //Adjusting the MenuBar
-        Menu file = menuBar.getMenus().get(0);
-        file.getItems().get(0).setText("Save");
-        file.getItems().get(0).setOnAction(actionEvent -> onSaveClick());
-
-        Menu about = menuBar.getMenus().get(1);
-        about.getItems().get(0).setOnAction(actionEvent -> onAboutClick());
     }
 
     //Saves position where the mouse is pressed
@@ -79,22 +79,4 @@ public class MainView implements Initializable {
         Platform.exit();
         System.exit(0);
     }
-
-    private void onSaveClick() {
-        if (mainController.saveData(textArea.getText())) {
-            Alerts.infoAlert("Save completed", "Your data has been saved successfully.");
-        } else {
-            Alerts.infoAlert("Couldn't save data", "Your data couldn't be saved. Please try again.");
-        }
-    }
-
-    private void onAboutClick() {
-        Alerts.infoAlert("Information about this program:", "This program has been developed by DoriZim.");
-    }
-
-    public void loadData() throws Exception {
-        textArea.setText(mainController.getData());
-    }
-
-    public void setMainController(MainController mainController) { this.mainController = mainController; }
 }

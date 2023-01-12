@@ -2,17 +2,12 @@ package bepo.textsafe.textsafe.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.spec.KeySpec;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 public class Serialization {
     private static final String cryptKey = "UEZEOEOR75";
@@ -80,7 +75,7 @@ public class Serialization {
     //Uses triple DES encryption to encrypt each String of data
     private static byte[] encrypt(String data) throws Exception {
         final MessageDigest md = MessageDigest.getInstance("md5");
-        final byte[] digestOfPassword = md.digest(cryptKey.getBytes("utf-8"));
+        final byte[] digestOfPassword = md.digest(cryptKey.getBytes(StandardCharsets.UTF_8));
         final byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
 
         for (int j = 0, k = 16; j < 8;) {
@@ -92,16 +87,15 @@ public class Serialization {
         final Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 
-        final byte[] plainTextBytes = data.getBytes("utf-8");
-        final byte[] cipherText = cipher.doFinal(plainTextBytes);
+        final byte[] plainTextBytes = data.getBytes(StandardCharsets.UTF_8);
 
-        return cipherText;
+        return cipher.doFinal(plainTextBytes);
     }
 
     //Decrypts Triple DES encryption for each byte[] of data
     private static String decrypt(byte[] data) throws Exception {
         final MessageDigest md = MessageDigest.getInstance("md5");
-        final byte[] digestOfPassword = md.digest(cryptKey.getBytes("utf-8"));
+        final byte[] digestOfPassword = md.digest(cryptKey.getBytes(StandardCharsets.UTF_8));
         final byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
 
         for (int j = 0, k = 16; j < 8;) {
@@ -115,6 +109,6 @@ public class Serialization {
 
         final byte[] plainText = decipher.doFinal(data);
 
-        return new String(plainText, "UTF-8");
+        return new String(plainText, StandardCharsets.UTF_8);
     }
 }

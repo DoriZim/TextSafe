@@ -60,11 +60,7 @@ public class PinController implements Initializable {
     public boolean getLoginState() throws Exception {
         pin = Serialization.deserializePin();
 
-        if((pin != null && (pin.length() == 4))) {
-            login = true;
-        } else {
-            login = false;
-        }
+        login = pin != null && (pin.length() == 4);
 
         return login;
     }

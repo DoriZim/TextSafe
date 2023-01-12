@@ -6,7 +6,6 @@ import bepo.textsafe.textsafe.views.MainView;
 import bepo.textsafe.textsafe.views.PinView;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -15,10 +14,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class Main extends Application {
@@ -58,6 +54,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("TextSafe");
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.show();
 
@@ -69,7 +66,7 @@ public class Main extends Application {
         pinStage.setScene(pinScene);
         pinStage.setTitle("Enter PIN");
         pinStage.setResizable(false);
-        //pinStage.initStyle(StageStyle.UNDECORATED);
+        pinStage.initStyle(StageStyle.UNDECORATED);
         pinStage.initModality(Modality.APPLICATION_MODAL);
         pinStage.setOnCloseRequest(windowEvent -> {
             Platform.exit();
