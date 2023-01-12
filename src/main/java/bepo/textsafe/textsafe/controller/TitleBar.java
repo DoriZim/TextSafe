@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Custom titleBar that handles window dragging, minimizing the window and closing the program.

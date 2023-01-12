@@ -1,5 +1,6 @@
 package bepo.textsafe.textsafe.util;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -7,15 +8,18 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Serialization {
     private static final String cryptKey = "UEZEOEOR75";
+    private static String dataKey = "";
 
     //All relevant paths
     private static final String savePath = "application-files/Data.ser";
     private static final String authPath = "application-files/Auth.ser";
-
+    private static final String tempPath = "application-files/Temp.ser";
 
     public static String deserializeData() throws Exception {
         String data = "";
@@ -27,7 +31,12 @@ public class Serialization {
             return data;
         }
 
-        data = decrypt(encrypted);
+        if(dataKey != null && !dataKey.isEmpty()) {
+            deserializeDataKey();
+        }
+
+        assert dataKey != null;
+        data = decrypt(encrypted, dataKey);
 
         System.out.println("Data: Deserialize Complete");
 
@@ -35,7 +44,12 @@ public class Serialization {
     }
 
     public static void serializeData(String data) throws Exception {
-        byte [] encrypted = encrypt(data);
+        if(dataKey != null && !dataKey.isEmpty()) {
+            deserializeDataKey();
+        }
+
+        assert dataKey != null;
+        byte [] encrypted = encrypt(data, dataKey);
 
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savePath))) {
             out.writeObject(encrypted);
@@ -45,16 +59,18 @@ public class Serialization {
     }
 
     public static String deserializePin() throws Exception {
-        String pin = "";
-        byte[] encrypted;
+        ArrayList<byte[]> encrypted;
 
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(authPath))) {
-            encrypted = (byte[]) in.readObject();
+            encrypted = (ArrayList<byte[]>) in.readObject();
         } catch(Exception e) {
-            return pin;
+            return null;
         }
 
-        pin = decrypt(encrypted);
+        String pin = decrypt(encrypted.get(0), cryptKey);
+        dataKey = decrypt(encrypted.get(1), cryptKey);
+
+        serializeDataKey();
 
         System.out.println("Pin: Deserialize Complete");
 
@@ -62,7 +78,21 @@ public class Serialization {
     }
 
     public static void serializePin(String pin) throws Exception {
-        byte [] encrypted = encrypt(pin);
+        ArrayList<byte[]> encrypted = new ArrayList<>();
+        encrypted.add(encrypt(pin, cryptKey));
+
+        if(dataKey == null || dataKey.isEmpty()) {
+            try {
+                deserializeDataKey();
+            } catch (Exception e) {
+                System.err.println("No key saved " + e);
+                keyGen();
+            }
+
+            serializeDataKey();
+        }
+
+         encrypted.add(encrypt(dataKey, cryptKey));
 
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(authPath))) {
             out.writeObject(encrypted);
@@ -71,11 +101,55 @@ public class Serialization {
         System.out.println("Pin: Serialize Complete");
     }
 
+    private static void keyGen() throws Exception {
+        System.out.println("Entered Keygen because no key could be found");
+
+        boolean valid = false;
+        Random random = new Random();
+        String alphabet = "0123456789QWERTZUIOPASDFGHJKLYXCVBNM";
+        String key = "";
+
+        while(!valid) {
+            for (int i = 0; i <= 10; i++) {
+                key += (alphabet.charAt(random.nextInt(alphabet.length())));
+            }
+
+            try {
+                byte[] temp = encrypt("sampleData", key);
+                decrypt(temp, key);
+                valid = true;
+
+            } catch(BadPaddingException e) {
+                System.err.println("Generated key invalid, trying again...");
+            }
+        }
+
+        dataKey = key;
+    }
+
+    private static void deserializeDataKey() throws IOException, ClassNotFoundException {
+        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(tempPath))) {
+            dataKey = (String) in.readObject();
+            System.out.println("Read Data Key");
+        } catch (EOFException e) {
+            System.err.println("temp file is empty");
+            throw new IOException();
+        }
+    }
+
+    private static void serializeDataKey() {
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tempPath))) {
+            out.writeObject(dataKey);
+            System.out.println("Wrote Data Key");
+        } catch(Exception a) {
+            System.err.println(a);
+        }
+    }
 
     //Uses triple DES encryption to encrypt each String of data
-    private static byte[] encrypt(String data) throws Exception {
+    private static byte[] encrypt(String data, String keyToUse) throws Exception {
         final MessageDigest md = MessageDigest.getInstance("md5");
-        final byte[] digestOfPassword = md.digest(cryptKey.getBytes(StandardCharsets.UTF_8));
+        final byte[] digestOfPassword = md.digest(keyToUse.getBytes(StandardCharsets.UTF_8));
         final byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
 
         for (int j = 0, k = 16; j < 8;) {
@@ -93,9 +167,9 @@ public class Serialization {
     }
 
     //Decrypts Triple DES encryption for each byte[] of data
-    private static String decrypt(byte[] data) throws Exception {
+    private static String decrypt(byte[] data, String keyToUse) throws Exception {
         final MessageDigest md = MessageDigest.getInstance("md5");
-        final byte[] digestOfPassword = md.digest(cryptKey.getBytes(StandardCharsets.UTF_8));
+        final byte[] digestOfPassword = md.digest(keyToUse.getBytes(StandardCharsets.UTF_8));
         final byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
 
         for (int j = 0, k = 16; j < 8;) {
