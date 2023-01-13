@@ -1,5 +1,6 @@
 package bepo.textsafe.textsafe.controller;
 
+import bepo.textsafe.textsafe.Main;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,7 +28,7 @@ public class TitleBar extends HBox {
     //Gets called by FXML when loading its components (including the titleBar)
     public TitleBar() {
         obj = this; //Assign already created controller
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/bepo/textSafe/textSafe/titleBar.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/bepo/textSafe/textSafe/titleBar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
