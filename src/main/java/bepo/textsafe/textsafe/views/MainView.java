@@ -1,24 +1,31 @@
 package bepo.textsafe.textsafe.views;
 
+import bepo.textsafe.textsafe.RootNodeFetcher;
 import bepo.textsafe.textsafe.controller.MainController;
+import bepo.textsafe.textsafe.controller.PinController;
 import bepo.textsafe.textsafe.util.Alerts;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextArea;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainView implements Initializable {
     private MainController mainController;
+    private PinController pinController;
+    private RootNodeFetcher rootNodeFetcher;
     @FXML private MenuBar menuBar;
     @FXML private TextArea textArea;
     @FXML private HBox bigHBox;
@@ -48,8 +55,12 @@ public class MainView implements Initializable {
 
         //Adjusting the MenuBar
         Menu file = menuBar.getMenus().get(0);
-        file.getItems().get(0).setText("Save");
-        file.getItems().get(0).setOnAction(actionEvent -> onSaveClick());
+        file.getItems().get(0).setText("Clear Text");
+        file.getItems().get(0).setOnAction(actionEvent -> textArea.clear());
+        file.getItems().add(new MenuItem("Save Changes"));
+        file.getItems().get(1).setOnAction(actionEvent -> onSaveClick());
+        file.getItems().add(new MenuItem("Edit PIN"));
+        file.getItems().get(2).setOnAction(actionEvent -> onPinChangeClick());
 
         Menu about = menuBar.getMenus().get(1);
         about.getItems().get(0).setOnAction(actionEvent -> onAboutClick());
@@ -76,6 +87,14 @@ public class MainView implements Initializable {
     //Handles close-Button by closing the program
     @FXML
     private void onCloseButtonClick() {
+        int choice = Alerts.choiceAlert("Quit the program?", "Are you sure you want to quit? \n Make sure all your changes are saved.", "Save and Quit", "Quit");
+
+        if(choice == 0) {
+            return;
+        } else if (choice == 1) {
+            onSaveClick();
+        }
+
         Platform.exit();
         System.exit(0);
     }
@@ -88,8 +107,26 @@ public class MainView implements Initializable {
         }
     }
 
+    private void onPinChangeClick() {
+        if(Alerts.confirmationAlert("Are you sure?", "You are about to set a new PIN. You cannot access the program without it.")) {
+            pinController.setEdit(true);
+
+            Parent root = new AnchorPane(rootNodeFetcher.get(PinView.class));
+            Scene pinScene = new Scene(root, 320, 400);
+
+            Stage pinStage = new Stage();
+            pinStage.setScene(pinScene);
+            pinStage.setTitle("Enter PIN");
+            pinStage.initStyle(StageStyle.UNDECORATED);
+            pinStage.initModality(Modality.APPLICATION_MODAL);
+            pinStage.showAndWait();
+
+            pinController.setEdit(false);
+        }
+    }
+
     private void onAboutClick() {
-        Alerts.infoAlert("Information about this program:", "This program has been developed by DoriZim.");
+        Alerts.infoAlert("Information about this program:", "This program has been developed by DoriZim. \n https://github.com/DoriZim");
     }
 
     public void loadData() throws Exception {
@@ -97,4 +134,6 @@ public class MainView implements Initializable {
     }
 
     public void setMainController(MainController mainController) { this.mainController = mainController; }
+    public void setPinController(PinController pinController) { this.pinController = pinController; }
+    public void setRootNodeFetcher(RootNodeFetcher rootNodeFetcher) { this.rootNodeFetcher = rootNodeFetcher; }
 }

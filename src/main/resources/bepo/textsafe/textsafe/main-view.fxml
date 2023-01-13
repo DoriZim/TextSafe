@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" styleClass="anchor-pane" stylesheets="@./style/general.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bepo.textsafe.textsafe.views.MainView">
    <children>
-      <TextArea fx:id="textArea" layoutX="6.0" layoutY="39.0" prefHeight="405.0" prefWidth="588.0" promptText="Enter text" />
+      <TextArea fx:id="textArea" layoutX="1.0" layoutY="34.0" prefHeight="415.0" prefWidth="597.0" promptText="Enter text" wrapText="true" />
       <HBox id="background" fx:id="bigHBox" alignment="CENTER_LEFT" layoutX="2.0" layoutY="1.5" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="596.0" spacing="430.0" stylesheets="@style/titleBar.css">
          <children>
             <MenuBar fx:id="menuBar" prefHeight="32.0" prefWidth="120.0" useSystemMenuBar="true">

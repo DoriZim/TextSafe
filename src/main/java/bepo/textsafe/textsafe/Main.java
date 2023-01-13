@@ -31,6 +31,10 @@ public class Main extends Application {
         (new File("application-files/Data.ser")).createNewFile();
         (new File("application-files/Auth.ser")).createNewFile();
 
+        File tempFile = new File("application-files/Temp.ser");
+        tempFile.createNewFile();
+        tempFile.deleteOnExit();
+
         //Sets rootNodeFetcher
         RootNodeFetcher rootNodeFetcher = (clazz) -> this.rootNodes.get(clazz);
 
@@ -50,6 +54,8 @@ public class Main extends Application {
         //Sets Controllers in Views
         this.pinView.setPinController(this.pinController);
         this.mainView.setMainController(this.mainController);
+        this.mainView.setPinController(this.pinController);
+        this.mainView.setRootNodeFetcher(rootNodeFetcher);
 
         stage.setScene(scene);
         stage.setTitle("TextSafe");
@@ -78,9 +84,8 @@ public class Main extends Application {
         //Once all controllers are set and the program is unlocked all data is loaded
         if (this.pinController.getLoginState()) {
             System.out.println("Login succeeded");
-            //todo - load data
             mainView.loadData();
-        }
+            }
         }
 
     public static void main(String[] args) {

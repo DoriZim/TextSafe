@@ -1,5 +1,7 @@
 #background {
     -fx-background-color: #2d2d2f;
+    -fx-border-color: darkgrey;
+    -fx-border-style: hidden hidden solid hidden;
 }
 
 .label {
@@ -22,7 +24,8 @@
     -fx-border-radius: 0;
     -fx-background-radius: 0;
 }
+
 #highlightedButton.button:hover {
-    -fx-background-color:#ff0000;
+    -fx-background-color: red;
     -fx-font-weight:bold;
 }

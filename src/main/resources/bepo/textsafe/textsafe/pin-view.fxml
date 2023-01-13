@@ -3,7 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import bepo.textsafe.textsafe.controller.TitleBar?>
 <AnchorPane stylesheets="@./style/general.css" styleClass="anchor-pane" prefHeight="400.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bepo.textsafe.textsafe.views.PinView">
    <children>
       <TextField fx:id="pinTextField" alignment="CENTER" layoutX="98.0" layoutY="82.0" prefHeight="46.0" prefWidth="114.0" promptText="Enter PIN"/>
@@ -18,6 +17,11 @@
       <Button layoutX="195.0" layoutY="261.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="9" />
       <Button layoutX="136.0" layoutY="315.0" mnemonicParsing="false" onAction="#onPinEnter" prefHeight="38.0" prefWidth="38.0" text="0" />
       <Label fx:id="infoLabel" layoutX="70.0" layoutY="44.0" prefWidth="170.0" text="PIN must consist of four digits" textFill="WHITE" />
-      <TitleBar layoutY="1.5" layoutX="2.0" prefWidth="316"/>
+      <HBox fx:id="bigHBox" id="background" stylesheets="@./style/titleBar.css" alignment="CENTER_RIGHT" layoutY="1.5" layoutX="2.0" prefWidth="316" prefHeight="32.0" spacing="169.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+         <HBox fx:id="buttonHBox" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="60.0">
+            <Button id="minimizeButton" fx:id="minimizeButton" prefHeight="28.0" prefWidth="28.0" text="-" textAlignment="CENTER" textFill="WHITE" />
+            <Button id="highlightedButton" fx:id="closeButton" prefHeight="28.0" prefWidth="28.0" text="x" textFill="WHITE" />
+         </HBox>
+      </HBox>
    </children>
 </AnchorPane>

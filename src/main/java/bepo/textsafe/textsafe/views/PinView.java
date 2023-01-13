@@ -2,7 +2,9 @@ package bepo.textsafe.textsafe.views;
 
 import bepo.textsafe.textsafe.controller.PinController;
 import bepo.textsafe.textsafe.util.Alerts;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,12 +24,34 @@ import java.util.ResourceBundle;
  */
 public class PinView implements Initializable {
     private PinController pinController;
-    @FXML public TextField pinTextField;
-    @FXML public Label infoLabel;
+    @FXML private HBox bigHBox;
+    @FXML private Button minimizeButton, closeButton;
+    @FXML private TextField pinTextField;
+    @FXML private Label infoLabel;
     private String pin = "";
+    public double X, Y;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {}
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Creating the mouse event handler
+        EventHandler<MouseEvent> eventHandler =
+                e -> {
+                    if(String.valueOf(e.getEventType()).equals("MOUSE_PRESSED")) {
+                        mousePress(e.getScreenX(), e.getScreenY());
+                    }
+                    if(String.valueOf(e.getEventType()).equals("MOUSE_DRAGGED")) {
+                        mouseDrag(e.getScreenX(), e.getScreenY());
+                    }
+                };
+
+        //Adding the event handler to the hBoxes the titleBar consists of
+        bigHBox.addEventHandler(MouseEvent.MOUSE_PRESSED, eventHandler);
+        bigHBox.addEventHandler(MouseEvent.MOUSE_DRAGGED, eventHandler);
+
+        //Adds eventHandler so that closeButton and minimizeButton clicks can be recognized
+        closeButton.setOnAction((event) -> this.onCloseButtonClick());
+        minimizeButton.setOnAction((event) -> this.onMinimizeButtonClick(event));
+    }
 
     /*
      * When all controllers are set it is checked if a user is logged in or not. This determines the instruction text in the view.
@@ -51,6 +77,31 @@ public class PinView implements Initializable {
             }
             eventHandler.consume(); //Event handler gets consumed because user sets the text themselves
         });
+    }
+
+    //Saves position where the mouse is pressed
+    private void mousePress(double screenX, double screenY) {
+        X = (bigHBox.getScene().getWindow().getX() - screenX);
+        Y = (bigHBox.getScene().getWindow().getY() - screenY);
+    }
+
+    //Sets where window moves
+    private void mouseDrag(double screenX, double screenY) {
+        bigHBox.getScene().getWindow().setX(screenX + X);
+        bigHBox.getScene().getWindow().setY(screenY + Y);
+    }
+
+    //Handles minimize-Button
+    @FXML
+    private void onMinimizeButtonClick(ActionEvent actionEvent) {
+        ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).setIconified(true);
+    }
+
+    //Handles close-Button by closing the program
+    @FXML
+    private void onCloseButtonClick() {
+        Platform.exit();
+        System.exit(0);
     }
 
     /*
