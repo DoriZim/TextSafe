@@ -20,6 +20,7 @@ public class Serialization {
 
     //All relevant paths
     private static final String savePath = "application-files/Data.ser";
+    private static final String namePath = "application-files/Info.ser";
     private static final String authPath = "application-files/Auth.ser";
     private static final String tempPath = "application-files/Temp.ser";
 
@@ -64,6 +65,49 @@ public class Serialization {
         }
 
         System.out.println("Data: Serialize Complete");
+    }
+
+    public static ArrayList<String> deserializeName() throws Exception {
+        ArrayList<String> name = new ArrayList<>();
+        ArrayList<byte[]> encrypted = new ArrayList<>();
+
+        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(namePath))) {
+            encrypted = (ArrayList<byte[]>) in.readObject();
+        } catch(Exception e) {
+            return name;
+        }
+
+        if(dataKey != null && !dataKey.isEmpty()) {
+            deserializeDataKey();
+        }
+
+        assert dataKey != null;
+        for (byte[] byteArr : encrypted) {
+            name.add(decrypt(byteArr, dataKey));
+        }
+
+        System.out.println("Name: Deserialize Complete");
+
+        return name;
+    }
+
+    public static void serializeName(ObservableList<String> name) throws Exception {
+        if(dataKey != null && !dataKey.isEmpty()) {
+            deserializeDataKey();
+        }
+
+        assert dataKey != null;
+        ArrayList<byte []> encrypted = new ArrayList<>();
+
+        for (String text : name) {
+            encrypted.add(encrypt(text, dataKey));
+        }
+
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(namePath))) {
+            out.writeObject(encrypted);
+        }
+
+        System.out.println("Name: Serialize Complete");
     }
 
     public static String deserializePin() throws Exception {

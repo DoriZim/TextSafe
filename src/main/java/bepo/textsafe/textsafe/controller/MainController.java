@@ -6,20 +6,29 @@ import javafx.collections.ObservableList;
 
 public class MainController {
     private ObservableList<String> data = FXCollections.observableArrayList();
+    private ObservableList<String> name = FXCollections.observableArrayList();
 
-    public ObservableList<String> getAllData() {
+    public void loadContent() {
         try {
+            name.setAll(Serialization.deserializeName());
             data.setAll(Serialization.deserializeData());
         } catch(Exception e) {
-            System.err.println("Data couldn't be loaded");
+            System.err.println("Name or data couldn't be loaded");
         }
+    }
 
+    public ObservableList<String> getAllNames() {
+        return name;
+    }
+
+    public ObservableList<String> getAllData() {
         return data;
     }
 
     public boolean saveAllData() {
         try {
             Serialization.serializeData(data);
+            Serialization.serializeName(name);
         } catch (Exception e) {
             System.err.println(e);
             return false;
@@ -47,12 +56,22 @@ public class MainController {
         data.set(index, newData);
     }
 
+    public void changeName(String newName, int index) {
+        name.set(index, newName);
+    }
+
     public void deleteData(int index) {
         data.remove(index);
+        name.remove(index);
+
         saveAllData();
     }
 
-    public void addData() {
+    public void addData(String newName) {
+        name.add(newName);
         data.add("");
+
+        System.out.println("Name size: " + name.size());
+        System.out.println("Data size: " + data.size());
     }
 }

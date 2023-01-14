@@ -78,14 +78,16 @@ public class MainView implements Initializable {
     }
 
     public void loadData() {
-        for (String text : mainController.getAllData()) {
-            Tab newTab = new Tab("Tab " + (tabPane.getTabs().size()));
+        for (String name : mainController.getAllNames()) {
+            Tab newTab = new Tab(name);
             newTab.setOnCloseRequest(event -> onTabClose(event));
             tabPane.getTabs().add(newTab);
         }
 
-        tabPane.getSelectionModel().selectFirst();
-        textArea.setText(mainController.getData(0));
+        if(tabPane.getTabs().size() > 0) {
+            tabPane.getSelectionModel().selectFirst();
+            textArea.setText(mainController.getData(0));
+        }
     }
 
     private void keyTyped() {
@@ -96,6 +98,7 @@ public class MainView implements Initializable {
     private void onTabClick() {
         if(tabPane.getSelectionModel().getSelectedIndex() != lastOpenedTab) {
             textArea.setText(mainController.getData(tabPane.getSelectionModel().getSelectedIndex()));
+            textArea.requestFocus();
 
             lastOpenedTab = tabPane.getSelectionModel().getSelectedIndex();
             System.out.println("Switched tab to " + lastOpenedTab);
@@ -104,11 +107,11 @@ public class MainView implements Initializable {
 
     public void onAddTabButtonClick() {
         //todo - open addTabView where the user can enter a tab name
-
-        Tab newTab = new Tab("Tab " + (tabPane.getTabs().size()));
+        String name = "Tab " + (tabPane.getTabs().size());
+        Tab newTab = new Tab(name);
 
         newTab.setOnCloseRequest(event -> onTabClose(event)); //Each tab needs its own listener set
-        mainController.addData();
+        mainController.addData(name);
 
         tabPane.getTabs().add(newTab);
         tabPane.getSelectionModel().selectLast();

@@ -29,6 +29,7 @@ public class Main extends Application {
         //Creates all necessary files
         (new File("application-files")).mkdirs();
         (new File("application-files/Data.ser")).createNewFile();
+        (new File("application-files/Info.ser")).createNewFile();
         (new File("application-files/Auth.ser")).createNewFile();
 
         File tempFile = new File("application-files/Temp.ser");
@@ -84,6 +85,7 @@ public class Main extends Application {
         //Once all controllers are set and the program is unlocked all data is loaded
         if (this.pinController.getLoginState()) {
             System.out.println("Login succeeded");
+            mainController.loadContent();
             mainView.loadData();
             }
         }
