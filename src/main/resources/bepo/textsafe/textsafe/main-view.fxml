@@ -4,13 +4,14 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" styleClass="anchor-pane" stylesheets="@./style/general.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bepo.textsafe.textsafe.views.MainView">
    <children>
-      <TextArea fx:id="textArea" layoutX="1.0" layoutY="34.0" prefHeight="415.0" prefWidth="597.0" promptText="Enter text" wrapText="true" />
+      <TextArea fx:id="textArea" layoutX="1.0" layoutY="63.0" prefHeight="386.0" prefWidth="598.0" promptText="Enter text" wrapText="true" />
       <HBox id="background" fx:id="bigHBox" alignment="CENTER_LEFT" layoutX="2.0" layoutY="1.5" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="596.0" spacing="430.0" stylesheets="@style/titleBar.css">
          <children>
             <MenuBar fx:id="menuBar" prefHeight="32.0" prefWidth="120.0" useSystemMenuBar="true">
@@ -35,5 +36,10 @@
             </HBox>
          </children>
       </HBox>
+      <TabPane fx:id="tabPane" layoutX="31.0" layoutY="34.0" prefHeight="32.0" prefWidth="567.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+        </tabs>
+      </TabPane>
+      <Button fx:id="addTabButton" onAction="#onAddTabButtonClick" layoutX="1.0" layoutY="37.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="26.0" text="+" />
    </children>
 </AnchorPane>

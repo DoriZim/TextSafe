@@ -1,5 +1,7 @@
 package bepo.textsafe.textsafe.util;
 
+import javafx.collections.ObservableList;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -21,12 +23,12 @@ public class Serialization {
     private static final String authPath = "application-files/Auth.ser";
     private static final String tempPath = "application-files/Temp.ser";
 
-    public static String deserializeData() throws Exception {
-        String data = "";
-        byte[] encrypted;
+    public static ArrayList<String> deserializeData() throws Exception {
+        ArrayList<String> data = new ArrayList<>();
+        ArrayList<byte[]> encrypted = new ArrayList<>();
 
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(savePath))) {
-            encrypted = (byte[]) in.readObject();
+            encrypted = (ArrayList<byte[]>) in.readObject();
         } catch(Exception e) {
             return data;
         }
@@ -36,20 +38,26 @@ public class Serialization {
         }
 
         assert dataKey != null;
-        data = decrypt(encrypted, dataKey);
+        for (byte[] byteArr : encrypted) {
+            data.add(decrypt(byteArr, dataKey));
+        }
 
         System.out.println("Data: Deserialize Complete");
 
         return data;
     }
 
-    public static void serializeData(String data) throws Exception {
+    public static void serializeData(ObservableList<String> data) throws Exception {
         if(dataKey != null && !dataKey.isEmpty()) {
             deserializeDataKey();
         }
 
         assert dataKey != null;
-        byte [] encrypted = encrypt(data, dataKey);
+        ArrayList<byte []> encrypted = new ArrayList<>();
+
+        for (String text : data) {
+            encrypted.add(encrypt(text, dataKey));
+        }
 
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savePath))) {
             out.writeObject(encrypted);
