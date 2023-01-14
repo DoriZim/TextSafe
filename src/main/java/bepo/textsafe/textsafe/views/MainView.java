@@ -104,6 +104,7 @@ public class MainView implements Initializable {
 
     public void onAddTabButtonClick() {
         //todo - open addTabView where the user can enter a tab name
+
         Tab newTab = new Tab("Tab " + (tabPane.getTabs().size()));
 
         newTab.setOnCloseRequest(event -> onTabClose(event)); //Each tab needs its own listener set
@@ -111,7 +112,8 @@ public class MainView implements Initializable {
 
         tabPane.getTabs().add(newTab);
         tabPane.getSelectionModel().selectLast();
-        lastOpenedTab = tabPane.getTabs().size() -2;
+
+        onTabClick();
     }
 
     private void onTabClose(Event event) {
