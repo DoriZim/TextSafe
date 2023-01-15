@@ -40,6 +40,6 @@
         <tabs>
         </tabs>
       </TabPane>
-      <Button fx:id="addTabButton" layoutX="2.0" layoutY="34.0" mnemonicParsing="false" onAction="#onAddTabButtonClick" prefHeight="28.0" prefWidth="32.0" text="+" />
+      <Button fx:id="addTabButton" id="addTabButton" layoutX="2.0" layoutY="34.0" mnemonicParsing="false" onAction="#onAddTabButtonClick" prefHeight="28.0" prefWidth="32.0" text="+" />
    </children>
 </AnchorPane>

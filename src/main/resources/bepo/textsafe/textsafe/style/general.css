@@ -106,6 +106,22 @@
     -fx-border-color: grey;
 }
 
+#addTabButton {
+    -fx-background-color: #2d2d2f;
+}
+
+#addTabButton:hover {
+    -fx-background-color: #4c5050;
+}
+
+#addTabButton:pressed {
+    -fx-background-color: dimgrey;
+}
+
+#addTabButton:focused {
+    -fx-border-color: transparent;
+}
+
 .scroll-pane {
     -fx-background-color: transparent;
 }
