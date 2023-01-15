@@ -4,7 +4,6 @@ import bepo.textsafe.textsafe.util.Alerts;
 import bepo.textsafe.textsafe.util.Serialization;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -73,6 +72,7 @@ public class PinController implements Initializable {
         edit = value;
     }
 
+    //todo - implement as part of "delete all program data" option
     public void clearPin() throws Exception {
         pin = "";
         Serialization.serializePin(pin);

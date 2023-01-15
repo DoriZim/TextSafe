@@ -21,10 +21,6 @@ public class MainController {
         return name;
     }
 
-    public ObservableList<String> getAllData() {
-        return data;
-    }
-
     public boolean saveAllData() {
         try {
             Serialization.serializeData(data);
@@ -33,7 +29,6 @@ public class MainController {
             System.err.println(e);
             return false;
         }
-
         return true;
     }
 
@@ -50,7 +45,6 @@ public class MainController {
         if(!data.isEmpty()) {
             data.set(index, newData);
         }
-
         return saveAllData();
     }
 
@@ -58,6 +52,7 @@ public class MainController {
         data.set(index, newData);
     }
 
+    //todo - implement feature
     public void changeName(String newName, int index) {
         name.set(index, newName);
     }
@@ -72,8 +67,5 @@ public class MainController {
     public void addData(String newName) {
         name.add(newName);
         data.add("");
-
-        System.out.println("Name size: " + name.size());
-        System.out.println("Data size: " + data.size());
     }
 }

@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,7 +32,6 @@ public class MainView implements Initializable {
     @FXML private HBox bigHBox;
     @FXML private Button minimizeButton, closeButton;
     @FXML private TabPane tabPane;
-    @FXML private Button addTabButton;
     private double X, Y;
     private int lastOpenedTab = 0;
 
@@ -96,7 +94,6 @@ public class MainView implements Initializable {
 
     private void keyTyped() {
         mainController.changeData(textArea.getText(), tabPane.getSelectionModel().getSelectedIndex());
-        System.out.println("Key typed");
     }
 
     private void onTabClick() {
@@ -106,7 +103,6 @@ public class MainView implements Initializable {
             textArea.requestFocus();
 
             lastOpenedTab = tabPane.getSelectionModel().getSelectedIndex();
-            System.out.println("Switched tab to " + lastOpenedTab);
         }
     }
 
@@ -154,6 +150,36 @@ public class MainView implements Initializable {
         }
     }
 
+    private void onSaveClick() {
+        if (mainController.saveData(textArea.getText(), tabPane.getSelectionModel().getSelectedIndex())) {
+            Alerts.infoAlert("Save completed", "Your data has been saved successfully.");
+        } else {
+            Alerts.infoAlert("Couldn't save data", "Your data couldn't be saved. Please try again.");
+        }
+    }
+
+    private void onPinChangeClick() {
+        if(Alerts.confirmationAlert("Are you sure?", "You are about to set a new PIN. You cannot access the program without it.")) {
+            pinController.setEdit(true);
+
+            Parent root = new AnchorPane(rootNodeFetcher.get(PinView.class));
+            Scene pinScene = new Scene(root, 320, 400);
+
+            Stage pinStage = new Stage();
+            pinStage.setScene(pinScene);
+            pinStage.setTitle("Enter PIN");
+            pinStage.initStyle(StageStyle.UNDECORATED);
+            pinStage.initModality(Modality.APPLICATION_MODAL);
+            pinStage.showAndWait();
+
+            pinController.setEdit(false);
+        }
+    }
+
+    private void onAboutClick() {
+        Alerts.infoAlert("Information about this program:", "This program has been developed by DoriZim. \n https://github.com/DoriZim");
+    }
+
     //Saves position where the mouse is pressed
     private void mousePress(double screenX, double screenY) {
         X = (bigHBox.getScene().getWindow().getX() - screenX);
@@ -187,39 +213,8 @@ public class MainView implements Initializable {
         System.exit(0);
     }
 
-    private void onSaveClick() {
-        if (mainController.saveData(textArea.getText(), tabPane.getSelectionModel().getSelectedIndex())) {
-            Alerts.infoAlert("Save completed", "Your data has been saved successfully.");
-        } else {
-            Alerts.infoAlert("Couldn't save data", "Your data couldn't be saved. Please try again.");
-        }
-    }
-
-    private void onPinChangeClick() {
-        if(Alerts.confirmationAlert("Are you sure?", "You are about to set a new PIN. You cannot access the program without it.")) {
-            pinController.setEdit(true);
-
-            Parent root = new AnchorPane(rootNodeFetcher.get(PinView.class));
-            Scene pinScene = new Scene(root, 320, 400);
-
-            Stage pinStage = new Stage();
-            pinStage.setScene(pinScene);
-            pinStage.setTitle("Enter PIN");
-            pinStage.initStyle(StageStyle.UNDECORATED);
-            pinStage.initModality(Modality.APPLICATION_MODAL);
-            pinStage.showAndWait();
-
-            pinController.setEdit(false);
-        }
-    }
-
-    private void onAboutClick() {
-        Alerts.infoAlert("Information about this program:", "This program has been developed by DoriZim. \n https://github.com/DoriZim");
-    }
-
     public void setMainController(MainController mainController) { this.mainController = mainController; }
     public void setPinController(PinController pinController) { this.pinController = pinController; }
-    public void setRootNodeFetcher(RootNodeFetcher rootNodeFetcher) { this.rootNodeFetcher = rootNodeFetcher; }
-
     public void setNameEnterView(NameEnterView nameEnterView) { this.nameEnterView = nameEnterView; }
+    public void setRootNodeFetcher(RootNodeFetcher rootNodeFetcher) { this.rootNodeFetcher = rootNodeFetcher; }
 }

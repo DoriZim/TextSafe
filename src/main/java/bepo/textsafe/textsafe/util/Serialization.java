@@ -26,7 +26,7 @@ public class Serialization {
 
     public static ArrayList<String> deserializeData() throws Exception {
         ArrayList<String> data = new ArrayList<>();
-        ArrayList<byte[]> encrypted = new ArrayList<>();
+        ArrayList<byte[]> encrypted;
 
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(savePath))) {
             encrypted = (ArrayList<byte[]>) in.readObject();
@@ -69,7 +69,7 @@ public class Serialization {
 
     public static ArrayList<String> deserializeName() throws Exception {
         ArrayList<String> name = new ArrayList<>();
-        ArrayList<byte[]> encrypted = new ArrayList<>();
+        ArrayList<byte[]> encrypted;
 
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(namePath))) {
             encrypted = (ArrayList<byte[]>) in.readObject();
@@ -184,7 +184,7 @@ public class Serialization {
             dataKey = (String) in.readObject();
             System.out.println("Read Data Key");
         } catch (EOFException e) {
-            System.err.println("temp file is empty");
+            System.err.println("Temp file is empty");
             throw new IOException();
         }
     }

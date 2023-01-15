@@ -98,10 +98,6 @@
     -fx-background-color: #4a4e50;
 }
 
-.menu:showing { /* menu when it's being shown (activated) */ }
-.menu .label { /* Styles the text on a menu item */ }
-.menu:showing .label { /* Styles the text on a menu item when activated */ }
-
 .button:hover {
     -fx-background-color: dimgrey;
 }
