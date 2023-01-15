@@ -26,6 +26,7 @@ import java.util.ResourceBundle;
 public class MainView implements Initializable {
     private MainController mainController;
     private PinController pinController;
+    private NameEnterView nameEnterView;
     private RootNodeFetcher rootNodeFetcher;
     @FXML private MenuBar menuBar;
     @FXML private TextArea textArea;
@@ -107,16 +108,29 @@ public class MainView implements Initializable {
 
     public void onAddTabButtonClick() {
         //todo - open addTabView where the user can enter a tab name
-        String name = "Tab " + (tabPane.getTabs().size());
-        Tab newTab = new Tab(name);
+        Parent root = new AnchorPane(rootNodeFetcher.get(NameEnterView.class));
+        Scene nameScene = new Scene(root);
 
-        newTab.setOnCloseRequest(event -> onTabClose(event)); //Each tab needs its own listener set
-        mainController.addData(name);
+        Stage nameStage = new Stage();
+        nameStage.setScene(nameScene);
+        nameStage.initModality(Modality.APPLICATION_MODAL);
+        nameStage.initStyle(StageStyle.UNDECORATED);
+        nameStage.setTitle("Enter name");
 
-        tabPane.getTabs().add(newTab);
-        tabPane.getSelectionModel().selectLast();
+        nameStage.showAndWait();
 
-        onTabClick();
+        if(!nameEnterView.getName().isEmpty()) {
+            String name = nameEnterView.getName();
+            Tab newTab = new Tab(name);
+
+            newTab.setOnCloseRequest(event -> onTabClose(event)); //Each tab needs its own listener set
+            mainController.addData(name);
+
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().selectLast();
+
+            onTabClick();
+        }
     }
 
     private void onTabClose(Event event) {
@@ -195,4 +209,6 @@ public class MainView implements Initializable {
     public void setMainController(MainController mainController) { this.mainController = mainController; }
     public void setPinController(PinController pinController) { this.pinController = pinController; }
     public void setRootNodeFetcher(RootNodeFetcher rootNodeFetcher) { this.rootNodeFetcher = rootNodeFetcher; }
+
+    public void setNameEnterView(NameEnterView nameEnterView) { this.nameEnterView = nameEnterView; }
 }

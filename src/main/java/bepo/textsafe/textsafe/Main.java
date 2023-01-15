@@ -3,6 +3,7 @@ package bepo.textsafe.textsafe;
 import bepo.textsafe.textsafe.controller.MainController;
 import bepo.textsafe.textsafe.controller.PinController;
 import bepo.textsafe.textsafe.views.MainView;
+import bepo.textsafe.textsafe.views.NameEnterView;
 import bepo.textsafe.textsafe.views.PinView;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,17 +12,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Main extends Application {
     private HashMap<Class<?extends Initializable>, Node> rootNodes = new HashMap<>();
     private PinController pinController = new PinController();
     private MainController mainController = new MainController();
     private PinView pinView = new PinView();
+    private NameEnterView nameEnterView = new NameEnterView();
     private MainView mainView;
 
     @Override
@@ -52,16 +56,23 @@ public class Main extends Application {
         fxmlLoaderPin.setControllerFactory((type) -> this.pinView);
         this.rootNodes.put(PinView.class, fxmlLoaderPin.load());
 
+        //Sets pinView
+        FXMLLoader fxmlLoaderName = new FXMLLoader(Main.class.getResource("/bepo/textsafe/textsafe/name-view.fxml"));
+        fxmlLoaderName.setControllerFactory((type) -> this.nameEnterView);
+        this.rootNodes.put(NameEnterView.class, fxmlLoaderName.load());
+
         //Sets Controllers in Views
         this.pinView.setPinController(this.pinController);
         this.mainView.setMainController(this.mainController);
         this.mainView.setPinController(this.pinController);
         this.mainView.setRootNodeFetcher(rootNodeFetcher);
+        this.mainView.setNameEnterView(this.nameEnterView);
 
         stage.setScene(scene);
         stage.setTitle("TextSafe");
         stage.setResizable(false);
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.getIcons().add(new Image(((Objects.requireNonNull(Main.class.getResourceAsStream("/bepo/textsafe/textsafe/style/icon.png"))))));
         stage.setScene(scene);
         stage.show();
 
@@ -75,6 +86,7 @@ public class Main extends Application {
         pinStage.setResizable(false);
         pinStage.initStyle(StageStyle.UNDECORATED);
         pinStage.initModality(Modality.APPLICATION_MODAL);
+        stage.getIcons().add(new Image(((Objects.requireNonNull(Main.class.getResourceAsStream("/bepo/textsafe/textsafe/style/icon.png"))))));
         pinStage.setOnCloseRequest(windowEvent -> {
             Platform.exit();
             System.exit(1);

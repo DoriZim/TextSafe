@@ -47,7 +47,9 @@ public class MainController {
     }
 
     public boolean saveData(String newData, int index) {
-        data.set(index, newData);
+        if(!data.isEmpty()) {
+            data.set(index, newData);
+        }
 
         return saveAllData();
     }
