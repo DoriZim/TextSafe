@@ -124,6 +124,7 @@
 
 .tab:selected {
     -fx-border-color: grey;
+    -fx-border-style: solid solid hidden solid;
 }
 
 .tab:pressed {
