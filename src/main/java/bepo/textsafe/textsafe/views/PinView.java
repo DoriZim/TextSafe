@@ -27,9 +27,8 @@ public class PinView implements Initializable {
     @FXML private HBox bigHBox;
     @FXML private Button minimizeButton, closeButton;
     @FXML private TextField pinTextField;
-    @FXML private Label infoLabel;
     private String pin = "";
-    public double X, Y;
+    private double X, Y;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

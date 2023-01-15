@@ -1,5 +1,7 @@
 package bepo.textsafe.textsafe.util;
 
+import javafx.collections.ObservableList;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -18,15 +20,16 @@ public class Serialization {
 
     //All relevant paths
     private static final String savePath = "application-files/Data.ser";
+    private static final String namePath = "application-files/Info.ser";
     private static final String authPath = "application-files/Auth.ser";
     private static final String tempPath = "application-files/Temp.ser";
 
-    public static String deserializeData() throws Exception {
-        String data = "";
-        byte[] encrypted;
+    public static ArrayList<String> deserializeData() throws Exception {
+        ArrayList<String> data = new ArrayList<>();
+        ArrayList<byte[]> encrypted;
 
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(savePath))) {
-            encrypted = (byte[]) in.readObject();
+            encrypted = (ArrayList<byte[]>) in.readObject();
         } catch(Exception e) {
             return data;
         }
@@ -36,26 +39,75 @@ public class Serialization {
         }
 
         assert dataKey != null;
-        data = decrypt(encrypted, dataKey);
+        for (byte[] byteArr : encrypted) {
+            data.add(decrypt(byteArr, dataKey));
+        }
 
         System.out.println("Data: Deserialize Complete");
 
         return data;
     }
 
-    public static void serializeData(String data) throws Exception {
+    public static void serializeData(ObservableList<String> data) throws Exception {
         if(dataKey != null && !dataKey.isEmpty()) {
             deserializeDataKey();
         }
 
         assert dataKey != null;
-        byte [] encrypted = encrypt(data, dataKey);
+        ArrayList<byte []> encrypted = new ArrayList<>();
+
+        for (String text : data) {
+            encrypted.add(encrypt(text, dataKey));
+        }
 
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savePath))) {
             out.writeObject(encrypted);
         }
 
         System.out.println("Data: Serialize Complete");
+    }
+
+    public static ArrayList<String> deserializeName() throws Exception {
+        ArrayList<String> name = new ArrayList<>();
+        ArrayList<byte[]> encrypted;
+
+        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(namePath))) {
+            encrypted = (ArrayList<byte[]>) in.readObject();
+        } catch(Exception e) {
+            return name;
+        }
+
+        if(dataKey != null && !dataKey.isEmpty()) {
+            deserializeDataKey();
+        }
+
+        assert dataKey != null;
+        for (byte[] byteArr : encrypted) {
+            name.add(decrypt(byteArr, dataKey));
+        }
+
+        System.out.println("Name: Deserialize Complete");
+
+        return name;
+    }
+
+    public static void serializeName(ObservableList<String> name) throws Exception {
+        if(dataKey != null && !dataKey.isEmpty()) {
+            deserializeDataKey();
+        }
+
+        assert dataKey != null;
+        ArrayList<byte []> encrypted = new ArrayList<>();
+
+        for (String text : name) {
+            encrypted.add(encrypt(text, dataKey));
+        }
+
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(namePath))) {
+            out.writeObject(encrypted);
+        }
+
+        System.out.println("Name: Serialize Complete");
     }
 
     public static String deserializePin() throws Exception {
@@ -132,7 +184,7 @@ public class Serialization {
             dataKey = (String) in.readObject();
             System.out.println("Read Data Key");
         } catch (EOFException e) {
-            System.err.println("temp file is empty");
+            System.err.println("Temp file is empty");
             throw new IOException();
         }
     }

@@ -98,10 +98,6 @@
     -fx-background-color: #4a4e50;
 }
 
-.menu:showing { /* menu when it's being shown (activated) */ }
-.menu .label { /* Styles the text on a menu item */ }
-.menu:showing .label { /* Styles the text on a menu item when activated */ }
-
 .button:hover {
     -fx-background-color: dimgrey;
 }
@@ -110,12 +106,65 @@
     -fx-border-color: grey;
 }
 
+#addTabButton {
+    -fx-background-color: #2d2d2f;
+}
+
+#addTabButton:hover {
+    -fx-background-color: #4c5050;
+}
+
+#addTabButton:pressed {
+    -fx-background-color: dimgrey;
+}
+
+#addTabButton:focused {
+    -fx-border-color: transparent;
+}
+
 .scroll-pane {
     -fx-background-color: transparent;
 }
 
 .scroll-bar:vertical {
     -fx-background-color: #4a4e50;
+}
+
+.tab-pane *.tab-header-area *.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab {
+    -fx-background-color: #4a4e50;
+}
+
+.tab:selected {
+    -fx-border-color: grey;
+    -fx-border-style: solid solid hidden solid;
+}
+
+.tab:pressed {
+    -fx-border-color: transparent;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent
+}
+
+.tab .tab-label {
+    -fx-text-fill: white;
+}
+
+.tab-close-button {
+    -fx-background-color: white;
+    -fx-border-color: lightgrey;
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+
+.tab-close-button:hover {
+    -fx-background-color: red;
+    -fx-border-color: red;
 }
 
 .scroll-bar:vertical .increment-button ,

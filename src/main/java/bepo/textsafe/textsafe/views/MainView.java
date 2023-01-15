@@ -6,6 +6,7 @@ import bepo.textsafe.textsafe.controller.PinController;
 import bepo.textsafe.textsafe.util.Alerts;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,19 +19,21 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainView implements Initializable {
     private MainController mainController;
     private PinController pinController;
+    private NameEnterView nameEnterView;
     private RootNodeFetcher rootNodeFetcher;
     @FXML private MenuBar menuBar;
     @FXML private TextArea textArea;
     @FXML private HBox bigHBox;
     @FXML private Button minimizeButton, closeButton;
-    public double X, Y;
+    @FXML private TabPane tabPane;
+    private double X, Y;
+    private int lastOpenedTab = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,7 +53,7 @@ public class MainView implements Initializable {
         bigHBox.addEventHandler(MouseEvent.MOUSE_DRAGGED, eventHandler);
 
         //Adds eventHandler so that closeButton and minimizeButton clicks can be recognized
-        closeButton.setOnAction((event) -> this.onCloseButtonClick());
+        closeButton.setOnAction((event) -> onCloseButtonClick());
         minimizeButton.setOnAction((event) -> this.onMinimizeButtonClick(event));
 
         //Adjusting the MenuBar
@@ -64,6 +67,117 @@ public class MainView implements Initializable {
 
         Menu about = menuBar.getMenus().get(1);
         about.getItems().get(0).setOnAction(actionEvent -> onAboutClick());
+
+        textArea.setOnKeyTyped(keyEvent -> keyTyped());
+
+        tabPane.setTabDragPolicy(TabPane.TabDragPolicy.FIXED);
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
+
+        tabPane.setOnMouseClicked(mouseEvent -> onTabClick());
+    }
+
+    public void loadData() {
+        for (String name : mainController.getAllNames()) {
+            Tab newTab = new Tab(name);
+            newTab.setOnCloseRequest(event -> onTabClose(event));
+            tabPane.getTabs().add(newTab);
+        }
+
+        if(tabPane.getTabs().size() > 0) {
+            tabPane.getSelectionModel().selectFirst();
+            textArea.setDisable(false);
+            textArea.setText(mainController.getData(0));
+        } else {
+            textArea.setDisable(true);
+        }
+    }
+
+    private void keyTyped() {
+        mainController.changeData(textArea.getText(), tabPane.getSelectionModel().getSelectedIndex());
+    }
+
+    private void onTabClick() {
+        if(tabPane.getSelectionModel().getSelectedIndex() != lastOpenedTab) {
+            textArea.setDisable(false);
+            textArea.setText(mainController.getData(tabPane.getSelectionModel().getSelectedIndex()));
+            textArea.requestFocus();
+
+            lastOpenedTab = tabPane.getSelectionModel().getSelectedIndex();
+        }
+    }
+
+    public void onAddTabButtonClick() {
+        Parent root = new AnchorPane(rootNodeFetcher.get(NameEnterView.class));
+        Scene nameScene = new Scene(root);
+
+        Stage nameStage = new Stage();
+        nameStage.setScene(nameScene);
+        nameStage.initModality(Modality.APPLICATION_MODAL);
+        nameStage.initStyle(StageStyle.UNDECORATED);
+        nameStage.setTitle("Enter name");
+
+        nameStage.showAndWait();
+
+        if(!nameEnterView.getName().isEmpty()) {
+            String name = nameEnterView.getName();
+            Tab newTab = new Tab(name);
+
+            newTab.setOnCloseRequest(event -> onTabClose(event)); //Each tab needs its own listener set
+            mainController.addData(name);
+
+            textArea.clear();
+            textArea.setDisable(false);
+
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().selectLast();
+
+            onTabClick();
+        }
+    }
+
+    private void onTabClose(Event event) {
+        if(Alerts.confirmationAlert("Are you sure you want to delete this tab?", "All information saved within this tab will be deleted!")) {
+            System.out.println("Deleting tab...");
+
+            mainController.deleteData(tabPane.getSelectionModel().getSelectedIndex());
+
+            if(tabPane.getTabs().size() == 1) {
+                textArea.setDisable(true);
+            }
+
+        } else {
+            event.consume(); //consuming the event means not letting the tab close
+        }
+    }
+
+    private void onSaveClick() {
+        if (mainController.saveData(textArea.getText(), tabPane.getSelectionModel().getSelectedIndex())) {
+            Alerts.infoAlert("Save completed", "Your data has been saved successfully.");
+        } else {
+            Alerts.infoAlert("Couldn't save data", "Your data couldn't be saved. Please try again.");
+        }
+    }
+
+    private void onPinChangeClick() {
+        if(Alerts.confirmationAlert("Are you sure?", "You are about to set a new PIN. You cannot access the program without it.")) {
+            pinController.setEdit(true);
+
+            Parent root = new AnchorPane(rootNodeFetcher.get(PinView.class));
+            Scene pinScene = new Scene(root, 320, 400);
+
+            Stage pinStage = new Stage();
+            pinStage.setScene(pinScene);
+            pinStage.setTitle("Enter PIN");
+            pinStage.initStyle(StageStyle.UNDECORATED);
+            pinStage.initModality(Modality.APPLICATION_MODAL);
+            pinStage.showAndWait();
+
+            pinController.setEdit(false);
+        }
+    }
+
+    private void onAboutClick() {
+        Alerts.infoAlert("Information about this program:", "This program has been developed by DoriZim. \n https://github.com/DoriZim");
     }
 
     //Saves position where the mouse is pressed
@@ -99,41 +213,8 @@ public class MainView implements Initializable {
         System.exit(0);
     }
 
-    private void onSaveClick() {
-        if (mainController.saveData(textArea.getText())) {
-            Alerts.infoAlert("Save completed", "Your data has been saved successfully.");
-        } else {
-            Alerts.infoAlert("Couldn't save data", "Your data couldn't be saved. Please try again.");
-        }
-    }
-
-    private void onPinChangeClick() {
-        if(Alerts.confirmationAlert("Are you sure?", "You are about to set a new PIN. You cannot access the program without it.")) {
-            pinController.setEdit(true);
-
-            Parent root = new AnchorPane(rootNodeFetcher.get(PinView.class));
-            Scene pinScene = new Scene(root, 320, 400);
-
-            Stage pinStage = new Stage();
-            pinStage.setScene(pinScene);
-            pinStage.setTitle("Enter PIN");
-            pinStage.initStyle(StageStyle.UNDECORATED);
-            pinStage.initModality(Modality.APPLICATION_MODAL);
-            pinStage.showAndWait();
-
-            pinController.setEdit(false);
-        }
-    }
-
-    private void onAboutClick() {
-        Alerts.infoAlert("Information about this program:", "This program has been developed by DoriZim. \n https://github.com/DoriZim");
-    }
-
-    public void loadData() throws Exception {
-        textArea.setText(mainController.getData());
-    }
-
     public void setMainController(MainController mainController) { this.mainController = mainController; }
     public void setPinController(PinController pinController) { this.pinController = pinController; }
+    public void setNameEnterView(NameEnterView nameEnterView) { this.nameEnterView = nameEnterView; }
     public void setRootNodeFetcher(RootNodeFetcher rootNodeFetcher) { this.rootNodeFetcher = rootNodeFetcher; }
 }
