@@ -87,7 +87,10 @@ public class MainView implements Initializable {
 
         if(tabPane.getTabs().size() > 0) {
             tabPane.getSelectionModel().selectFirst();
+            textArea.setDisable(false);
             textArea.setText(mainController.getData(0));
+        } else {
+            textArea.setDisable(true);
         }
     }
 
@@ -98,6 +101,7 @@ public class MainView implements Initializable {
 
     private void onTabClick() {
         if(tabPane.getSelectionModel().getSelectedIndex() != lastOpenedTab) {
+            textArea.setDisable(false);
             textArea.setText(mainController.getData(tabPane.getSelectionModel().getSelectedIndex()));
             textArea.requestFocus();
 
@@ -107,7 +111,6 @@ public class MainView implements Initializable {
     }
 
     public void onAddTabButtonClick() {
-        //todo - open addTabView where the user can enter a tab name
         Parent root = new AnchorPane(rootNodeFetcher.get(NameEnterView.class));
         Scene nameScene = new Scene(root);
 
@@ -126,6 +129,9 @@ public class MainView implements Initializable {
             newTab.setOnCloseRequest(event -> onTabClose(event)); //Each tab needs its own listener set
             mainController.addData(name);
 
+            textArea.clear();
+            textArea.setDisable(false);
+
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().selectLast();
 
@@ -135,9 +141,14 @@ public class MainView implements Initializable {
 
     private void onTabClose(Event event) {
         if(Alerts.confirmationAlert("Are you sure you want to delete this tab?", "All information saved within this tab will be deleted!")) {
+            System.out.println("Deleting tab...");
+
             mainController.deleteData(tabPane.getSelectionModel().getSelectedIndex());
 
-            System.out.println("Deleting tab...");
+            if(tabPane.getTabs().size() == 1) {
+                textArea.setDisable(true);
+            }
+
         } else {
             event.consume(); //consuming the event means not letting the tab close
         }
